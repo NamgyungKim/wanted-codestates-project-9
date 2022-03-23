@@ -13,7 +13,7 @@ const Type = () => {
 
   return (
     <Page>
-      <GuideText stap={1} text={'돌봄 유형을 선택해 주세요'} />
+      <GuideText />
       <Box>
         <FullTime htmlFor="fullTime">
           <input type="radio" name="type" id="fullTime" />

@@ -34,7 +34,7 @@ const Schedule = () => {
 
   return (
     <Page>
-      <GuideText stap={2} text={'돌봄 스케줄을 설정해주세요'} />
+      <GuideText />
       <Form>
         <InputDate>
           <FlexColumn>

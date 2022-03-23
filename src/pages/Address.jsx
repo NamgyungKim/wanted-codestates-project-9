@@ -11,7 +11,7 @@ const Address = () => {
 
   return (
     <Page>
-      <GuideText stap={3} text={'돌봄 주소를 입력해주세요'} />
+      <GuideText />
       <Form>
         <div>
           <input
