@@ -3,11 +3,27 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { IoIosClose } from 'react-icons/io';
 import { useState } from 'react';
+import { getAddress } from '../util/axios';
+import { useRef } from 'react';
 
 const AddressSearchModal = ({ setIsShowModal }) => {
-  const [addressArr, setAddressArr] = useState([23]);
+  const inputRef = useRef();
+  const [addressArr, setAddressArr] = useState([]);
 
-  setAddressArr;
+  const debounce = (callback, delay = 500) => {
+    let timer;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        return callback();
+      }, delay);
+    };
+  };
+
+  const getData = async () => {
+    const data = await getAddress(inputRef.current.value);
+    data ? setAddressArr(data) : setAddressArr([]);
+  };
 
   return (
     <Modal>
@@ -16,44 +32,34 @@ const AddressSearchModal = ({ setIsShowModal }) => {
           <h2>주소검색</h2>
           <IoIosClose onClick={() => setIsShowModal(false)} size={35} />
         </Title>
-        <input type="text" placeholder="주소 또는 건물명으로 검색" />
+        <input
+          ref={inputRef}
+          onChange={debounce(getData)}
+          type="text"
+          placeholder="주소 또는 건물명으로 검색"
+        />
         {addressArr.length === 0 ? (
           <Inform>
-            <p>
+            <span>
               찾으시려는 도로명 주소의 건물번호 또는 시설명까지 상세히 입력 후
               검색해주세요.
-            </p>
-            <p>예) 중앙동, 불정로432번길</p>
+            </span>
+            <span>예) 중앙동, 불정로432번길</span>
           </Inform>
         ) : (
           <AddressData>
-            <li>
-              <div>
-                <h4>서울특별시 강남구 테헤란로 77길 9 (삼성동)</h4>
-                <p className="small">
-                  <span>지번</span>서울특별시 강남구 삼성동 143-27
-                </p>
-              </div>
-              <span>06284</span>
-            </li>
-            <li>
-              <div>
-                <h4>서울특별시 강남구 테헤란로 77길 9 (삼성동)</h4>
-                <p className="small">
-                  <span>지번</span>서울특별시 강남구 삼성동 143-27
-                </p>
-              </div>
-              <span>06284</span>
-            </li>
-            <li>
-              <div>
-                <h4>서울특별시 강남구 테헤란로 77길 9 (삼성동)</h4>
-                <p className="small">
-                  <span>지번</span>서울특별시 강남구 삼성동 143-27
-                </p>
-              </div>
-              <span>06284</span>
-            </li>
+            {addressArr.map((item, index) => (
+              <li key={index}>
+                <div>
+                  <h4>{item.roadAddr}</h4>
+                  <p className="small">
+                    <span>지번</span>
+                    {item.jibunAddr}
+                  </p>
+                </div>
+                <span>{item.zipNo}</span>
+              </li>
+            ))}
           </AddressData>
         )}
       </SearchBox>
@@ -68,13 +74,14 @@ const AddressSearchModal = ({ setIsShowModal }) => {
 };
 
 const Modal = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: #f6f6f6;
   z-index: 10;
+  overflow: auto;
 `;
 
 const SearchBox = styled.div`
@@ -180,7 +187,8 @@ const Inform = styled.p`
   color: var(--dark-gray);
   font-size: 12px;
   line-height: 1.5;
-  p {
+  span {
+    display: block;
     text-align: center;
   }
   @media screen and (min-width: 425px) {
