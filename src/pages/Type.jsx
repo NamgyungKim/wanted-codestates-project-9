@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import GuideText from '../components/GuideText';
+import { getWorkType } from '../redux/actions';
 
 const Type = () => {
-  const [type, setTpye] = useState();
+  const dispatch = useDispatch();
 
   const clickRadioBtn = select => {
-    setTpye(select);
+    dispatch(getWorkType(select));
   };
-
-  console.log(type);
 
   return (
     <Page>
