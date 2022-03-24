@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useRef } from 'react';
 import styled from 'styled-components';
+import AddressSearchModal from '../components/AddressSearchModal';
 import GuideText from '../components/GuideText';
 
 const Address = () => {
   const addressRef = useRef();
+  const [isShowModal, setIsShowModal] = useState(false);
   const [addressValue, setAddressValue] = useState(false);
 
   setAddressValue;
@@ -16,6 +18,7 @@ const Address = () => {
         <div>
           <input
             ref={addressRef}
+            onClick={() => setIsShowModal(true)}
             type="text"
             placeholder="주소 또는 건물명으로 검색"
           />
@@ -23,6 +26,9 @@ const Address = () => {
         </div>
         <input type="text" placeholder="상세주소를 입력해주세요" />
       </Form>
+      {isShowModal ? (
+        <AddressSearchModal setIsShowModal={setIsShowModal} />
+      ) : null}
     </Page>
   );
 };
