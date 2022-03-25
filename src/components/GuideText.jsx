@@ -78,7 +78,7 @@ const TextBox = styled.div`
     }
   }
   h2 {
-    width: 305px;
+    width: 400px;
     margin-top: 8px;
     font-size: 24px;
     line-height: 36px;
