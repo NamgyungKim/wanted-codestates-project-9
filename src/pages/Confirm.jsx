@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -13,8 +14,8 @@ const Confirm = () => {
   const typeCheck = e => {
     const { value } = e.target;
     const onlyNumber = value.replace(/[^0-9]/g, '');
-    inputRef.current.value = onlyNumber;
     dispatch(getPhoneNum(onlyNumber));
+    inputRef.current.value = onlyNumber;
   };
 
   const transformDateForm = date => {
@@ -29,6 +30,11 @@ const Confirm = () => {
       return `오후 ${hour - 12}시`;
     }
   };
+
+  useEffect(() => {
+    if (!store.phoneNumber) return;
+    inputRef.current.value = store.phoneNumber;
+  }, []);
 
   return (
     <Page>

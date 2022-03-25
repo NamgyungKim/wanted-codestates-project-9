@@ -17,6 +17,7 @@ const Address = () => {
 
   useEffect(() => {
     addressRef.current.value = store.roadAddress;
+    detailAddressRef.current.value = store.addressDetail;
   }, [store]);
 
   return (

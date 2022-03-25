@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import GuideText from '../components/GuideText';
@@ -6,6 +7,9 @@ import { getWorkType } from '../redux/actions';
 
 const Type = () => {
   const dispatch = useDispatch();
+  const type = useSelector(state => state.workType);
+
+  console.log(type);
 
   const clickRadioBtn = select => {
     dispatch(getWorkType(select));
@@ -16,20 +20,25 @@ const Type = () => {
       <GuideText />
       <Box>
         <FullTime htmlFor="fullTime">
-          <input type="radio" name="type" id="fullTime" />
-          <div onClick={() => clickRadioBtn('Day')}>
+          <input
+            type="radio"
+            name="type"
+            id="fullTime"
+            checked={type === 'DAY'}
+          />
+          <div onClick={() => clickRadioBtn('DAY')}>
             <i>🌞</i>
             <p>24시간 상주</p>
           </div>
         </FullTime>
         <PartTime htmlFor="partTime">
           <input
-            onClick={() => clickRadioBtn('Time')}
             type="radio"
             name="type"
             id="partTime"
+            checked={type === 'TIME'}
           />
-          <div>
+          <div onClick={() => clickRadioBtn('TIME')}>
             <i>⏰</i>
             <p>시간제 돌봄</p>
           </div>
