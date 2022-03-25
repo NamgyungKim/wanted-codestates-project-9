@@ -4,7 +4,7 @@ const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
 
 // 주소API
 const addressApi = axios.create({
-  baseURL: 'https://www.juso.go.kr',
+  baseURL: 'https://www.juso.go.kr/addrlink',
   params: {
     currentPag: 1,
     countPerPag: 10,
@@ -16,7 +16,7 @@ const addressApi = axios.create({
 export const getAddressAxios = async searchWord => {
   try {
     const response = await addressApi.get(
-      `/addrlink/addrLinkApi.do?keyword=${searchWord}`,
+      `addrLinkApi.do?keyword=${searchWord}`,
     );
     const {
       results: { juso: data },
@@ -28,16 +28,15 @@ export const getAddressAxios = async searchWord => {
 };
 
 // 케어닥API
-const caredocApi = axios.create({
-  baseURL: 'https://caredoc-fe-server.herokuapp.com',
-});
-
-export const staticData = async () => {
-  try {
-    const response = await caredocApi.get('/static');
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+// const caredocApi = axios.create({
+//   baseURL: 'https://caredoc-fe-server.herokuapp.com',
+// });
+// export const staticData = async (data) => {
+//   try {
+//     const response = await caredocApi.post('/application');
+//     const data = response.data;
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

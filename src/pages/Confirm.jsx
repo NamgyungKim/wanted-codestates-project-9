@@ -89,7 +89,8 @@ const Confirm = () => {
 };
 
 const Page = styled.div`
-  padding: 0 16px;
+  padding: 0 16px 80px;
+  background-color: #fff;
   input {
     display: flex;
     height: 48px;
@@ -105,6 +106,7 @@ const Page = styled.div`
     }
   }
   @media screen and (min-width: 425px) {
+    padding: 0 16px 100px;
     input {
       height: 60px;
       font-size: 16px;
