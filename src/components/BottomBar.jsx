@@ -2,13 +2,42 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-const BottomBar = ({ process }) => {
+const BottomBar = () => {
+  const store = useSelector(state => state);
   const url = useLocation().pathname;
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
 
-  console.log(isActive, process, setIsActive);
+  // 유효성 검사
+  useEffect(() => {
+    switch (url) {
+      case '/type':
+        store.workType ? setIsActive(true) : setIsActive(false);
+        break;
+      case '/schedule':
+        for (const item in store.schedule) {
+          if (!store.schedule[item]) {
+            setIsActive(false);
+            return;
+          }
+          setIsActive(true);
+        }
+        break;
+      case '/address':
+        if (store.address.addressDetail && store.address.roadAddress) {
+          setIsActive(true);
+        } else {
+          setIsActive(false);
+        }
+        break;
+      case '/confirm':
+        store.phoneNumber ? setIsActive(true) : setIsActive(false);
+        break;
+    }
+  }, [url, store]);
 
   const nextBtn = () => {
     if (!isActive) return;
