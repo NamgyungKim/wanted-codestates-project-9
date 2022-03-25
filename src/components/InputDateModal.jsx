@@ -16,16 +16,26 @@ const InputDateModal = ({ setIsShowCalender }) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+  };
 
-    const startDate = `${start.getFullYear()}-${
-      start.getMonth() + 1
-    }-${start.getDate()}`;
-    const endDate = `${end.getFullYear()}-${
-      end.getMonth() + 1
-    }-${end.getDate()}`;
+  const setNum = num => {
+    if (num < 10) {
+      return `0${num}`;
+    }
+    return num;
+  };
 
-    dispatch(getSchedule('startDate', startDate));
-    dispatch(getSchedule('endDate', endDate));
+  const clickSelectBtn = () => {
+    const startDateText = `${startDate.getFullYear()}-${setNum(
+      startDate.getMonth() + 1,
+    )}-${setNum(startDate.getDate())}`;
+    const endDateText = `${endDate.getFullYear()}-${setNum(
+      endDate.getMonth() + 1,
+    )}-${setNum(endDate.getDate())}`;
+
+    dispatch(getSchedule('startDate', startDateText));
+    dispatch(getSchedule('endDate', endDateText));
+    setIsShowCalender(false);
   };
 
   return (
@@ -46,7 +56,7 @@ const InputDateModal = ({ setIsShowCalender }) => {
         />
       </Calender>
       <div>
-        <button onClick={() => setIsShowCalender(false)}>선택완료</button>
+        <button onClick={clickSelectBtn}>선택완료</button>
       </div>
     </Modal>
   );
