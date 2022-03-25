@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import GuideText from '../components/GuideText';
 import InputDateModal from '../components/InputDateModal';
 import SelectOption from '../components/SelectOption';
-import { staticData } from '../util/axios';
 
 const startTime = [
   { value: '08:00:00', text: '오전8시' },
@@ -23,21 +22,50 @@ const startTime = [
   { value: '21:00:00', text: '오후9시' },
 ];
 
+const careHours = [
+  {
+    value: 3,
+    text: '3시간',
+    disabled: false,
+  },
+  {
+    value: 4,
+    text: '4시간',
+    disabled: false,
+  },
+  {
+    value: 5,
+    text: '5시간',
+    disabled: false,
+  },
+  {
+    value: 6,
+    text: '6시간',
+    disabled: false,
+  },
+  {
+    value: 7,
+    text: '7시간',
+    disabled: false,
+  },
+  {
+    value: 8,
+    text: '8시간',
+    disabled: false,
+  },
+  {
+    value: 9,
+    text: '9시간',
+    disabled: false,
+  },
+];
+
 const Schedule = () => {
-  const [careHours, setCareHours] = useState();
   const [modalType, setModalType] = useState('');
   const [modalData, setModalData] = useState([]);
   const [isShowCalender, setIsShowCalender] = useState(false);
 
   const store = useSelector(state => state.schedule);
-
-  useEffect(() => {
-    const getStaticData = async () => {
-      const data = await staticData();
-      setCareHours(data.careHours);
-    };
-    getStaticData();
-  }, []);
 
   const careHoursText = () => {
     for (const item of startTime) {
