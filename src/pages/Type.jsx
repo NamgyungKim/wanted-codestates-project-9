@@ -24,6 +24,7 @@ const Type = () => {
             name="type"
             id="fullTime"
             checked={type === 'DAY'}
+            readOnly
           />
           <div onClick={() => clickRadioBtn('DAY')}>
             <i>🌞</i>
@@ -36,6 +37,7 @@ const Type = () => {
             name="type"
             id="partTime"
             checked={type === 'TIME'}
+            readOnly
           />
           <div onClick={() => clickRadioBtn('TIME')}>
             <i>⏰</i>
