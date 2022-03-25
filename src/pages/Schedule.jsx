@@ -64,7 +64,7 @@ const Schedule = () => {
   const [modalType, setModalType] = useState('');
   const [modalData, setModalData] = useState([]);
   const [isShowCalender, setIsShowCalender] = useState(false);
-
+  const type = useSelector(state => state.workType);
   const store = useSelector(state => state.schedule);
 
   const careHoursText = () => {
@@ -106,16 +106,18 @@ const Schedule = () => {
             {store.visitTime ? careHoursText() : '선택'}
           </SelectBox>
         </FlexColumn>
-        <FlexColumn>
-          <label htmlFor="careHours">하루 돌봄 시간</label>
-          <SelectBox
-            onClick={() => {
-              setModalData(careHours), setModalType('hour');
-            }}
-          >
-            {store.hour ? `${store.hour} 시간` : '선택'}
-          </SelectBox>
-        </FlexColumn>
+        {type === 'TIME' ? (
+          <FlexColumn>
+            <label htmlFor="careHours">하루 돌봄 시간</label>
+            <SelectBox
+              onClick={() => {
+                setModalData(careHours), setModalType('hour');
+              }}
+            >
+              {store.hour ? `${store.hour} 시간` : '선택'}
+            </SelectBox>
+          </FlexColumn>
+        ) : null}
       </Form>
       {modalData.length == 0 ? null : (
         <SelectOption

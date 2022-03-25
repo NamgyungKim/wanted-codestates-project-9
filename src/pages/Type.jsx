@@ -3,16 +3,15 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import GuideText from '../components/GuideText';
-import { getWorkType } from '../redux/actions';
+import { getSchedule, getWorkType } from '../redux/actions';
 
 const Type = () => {
   const dispatch = useDispatch();
   const type = useSelector(state => state.workType);
 
-  console.log(type);
-
   const clickRadioBtn = select => {
     dispatch(getWorkType(select));
+    dispatch(getSchedule('hour', null));
   };
 
   return (

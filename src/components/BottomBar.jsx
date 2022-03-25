@@ -20,6 +20,7 @@ const BottomBar = () => {
       case '/schedule':
         for (const item in store.schedule) {
           if (!store.schedule[item]) {
+            if (store.workType === 'DAY' && item === 'hour') return;
             setIsActive(false);
             return;
           }
