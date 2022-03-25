@@ -39,6 +39,12 @@ const BottomBar = () => {
     }
   }, [url, store]);
 
+  useEffect(() => {
+    if (url !== '/' && !store.workType) {
+      navigate('/type');
+    }
+  }, []);
+
   const nextBtn = () => {
     if (!isActive) return;
     switch (url) {
@@ -57,12 +63,29 @@ const BottomBar = () => {
     }
   };
 
+  const previousBnt = () => {
+    switch (url) {
+      case '/type':
+        navigate('/');
+        break;
+      case '/schedule':
+        navigate('/type');
+        break;
+      case '/address':
+        navigate('/schedule');
+        break;
+      case '/confirm':
+        navigate('/address');
+        break;
+    }
+  };
+
   return (
     <>
       {url === '/' || url === '/completion' ? null : (
         <Wrap>
           <Bar>
-            <Previous onClick={() => navigate(-1)}>이전</Previous>
+            <Previous onClick={previousBnt}>이전</Previous>
             <Next onClick={nextBtn} isActive={isActive}>
               다음
             </Next>

@@ -3,11 +3,26 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
-// import PropTypes from 'prop-types';
-
 const Header = () => {
   const url = useLocation().pathname;
   const navigate = useNavigate();
+
+  const previousBnt = () => {
+    switch (url) {
+      case '/type':
+        navigate('/');
+        break;
+      case '/schedule':
+        navigate('/type');
+        break;
+      case '/address':
+        navigate('/schedule');
+        break;
+      case '/confirm':
+        navigate('/address');
+        break;
+    }
+  };
 
   return (
     <>
@@ -15,7 +30,7 @@ const Header = () => {
         <Wrap>
           <HeaderBar>
             {url === '/completion' ? null : (
-              <i onClick={() => navigate(-1)}>
+              <i onClick={previousBnt}>
                 <IoIosArrowBack size={24} />
               </i>
             )}
@@ -64,7 +79,5 @@ const HeaderBar = styled.div`
     }
   }
 `;
-
-Header.propTypes = {};
 
 export default Header;
