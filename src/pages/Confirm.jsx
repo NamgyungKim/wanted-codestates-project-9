@@ -1,16 +1,33 @@
-import React from 'react';
-import { useState } from 'react';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import GuideText from '../components/GuideText';
+import { getPhoneNum } from '../redux/actions';
 
 const Confirm = () => {
   const inputRef = useRef();
-  const [phonNum, setPhonNum] = useState('');
+  const dispatch = useDispatch();
+  const store = useSelector(state => state);
 
   const typeCheck = e => {
-    if (!/[0-9]/g.test(e.nativeEvent.data)) return;
-    setPhonNum(phonNum + e.nativeEvent.data);
+    const { value } = e.target;
+    const onlyNumber = value.replace(/[^0-9]/g, '');
+    inputRef.current.value = onlyNumber;
+    dispatch(getPhoneNum(onlyNumber));
+  };
+
+  const transformDateForm = date => {
+    const dateArr = date.split('-');
+    return `${dateArr[0]}년 ${dateArr[1]}월 ${dateArr[2]}일`;
+  };
+  const transformTimeForm = time => {
+    const hour = time.split(':')[0];
+    if (hour < 12) {
+      return `오전 ${hour}시`;
+    } else {
+      return `오후 ${hour - 12}시`;
+    }
   };
 
   return (
@@ -22,34 +39,43 @@ const Confirm = () => {
         </div>
         <div>
           <h4>돌봄 유형</h4>
-          <p>⏰ 시간제 돌봄</p>
+          <p>
+            {store.workType === 'Time'
+              ? '⏰ 시간제 돌봄'
+              : store.workType === 'Day'
+              ? '🌞 24시간 상주'
+              : '유형이 없습니다.'}
+          </p>
         </div>
 
         <hr />
 
         <div>
           <h4>돌봄 일정</h4>
-          <p>2022년 1월 12일 ~ 22년 1월 23일</p>
-          <p>오전 10시부턴</p>
-          <p>8시간</p>
+          <p>
+            {transformDateForm(store.schedule.startDate)} ~{' '}
+            {transformDateForm(store.schedule.endDate)}
+          </p>
+          <p>{transformTimeForm(store.schedule.visitTime)} 부터</p>
+          <p>{store.schedule.hour}시간</p>
         </div>
 
         <hr />
 
         <div>
           <h4>돌봄 주소</h4>
-          <p>서울특별시 강남구 테헤란로 77길 9 (삼성동)</p>
+          <p>{store.address.roadAddress}</p>
           <p className="small">
-            <span>지번</span>서울특별시 강남구 삼성동 143-27
+            <span>지번</span>
+            {store.address.jibunAddress}
           </p>
-          <p>케어닥주공아파트 102동 1204호</p>
+          <p>{store.address.addressDetail}</p>
         </div>
       </Box>
       <input
         ref={inputRef}
         onChange={typeCheck}
-        value={phonNum}
-        type="text"
+        type="tel"
         placeholder="전화번호를 입력해주세요 (숫자만 입력해주세요.)"
       />
     </Page>
