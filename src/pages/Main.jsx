@@ -18,7 +18,7 @@ const Main = () => {
 
 const Page = styled.div`
   display: flex;
-  height: 100vh;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
