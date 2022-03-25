@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { IoIosClose } from 'react-icons/io';
 import { useState } from 'react';
-import { getAddress } from '../util/axios';
+import { getAddressAxios } from '../util/axios';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAddress } from '../redux/actions';
 
 const AddressSearchModal = ({ setIsShowModal }) => {
+  const dispatch = useDispatch();
   const inputRef = useRef();
   const [addressArr, setAddressArr] = useState([]);
 
@@ -21,8 +24,20 @@ const AddressSearchModal = ({ setIsShowModal }) => {
   };
 
   const getData = async () => {
-    const data = await getAddress(inputRef.current.value);
+    const data = await getAddressAxios(inputRef.current.value);
     data ? setAddressArr(data) : setAddressArr([]);
+  };
+
+  const selectAddress = item => {
+    dispatch(getAddress('jibunAddress', item.jibunAddr));
+    dispatch(getAddress('liName', item.liNm));
+    dispatch(getAddress('locationCode', item.admCd));
+    dispatch(getAddress('roadCode', item.rnMgtSn));
+    dispatch(getAddress('myundongName', item.emdNm));
+    dispatch(getAddress('roadAddress', item.roadAddr));
+    dispatch(getAddress('sidoName', item.siNm));
+    dispatch(getAddress('sigunguName', item.sggNm));
+    setIsShowModal(false);
   };
 
   return (
@@ -49,7 +64,7 @@ const AddressSearchModal = ({ setIsShowModal }) => {
         ) : (
           <AddressData>
             {addressArr.map((item, index) => (
-              <li key={index}>
+              <li onClick={() => selectAddress(item)} key={index}>
                 <div>
                   <h4>{item.roadAddr}</h4>
                   <p className="small">

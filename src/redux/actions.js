@@ -18,10 +18,10 @@ export const getSchedule = (key, date) => {
   };
 };
 
-export const getAddress = (key, date) => {
+export const getAddress = (key, data) => {
   return {
     type: GET_ADDRESS,
-    date,
+    data,
     key,
   };
 };

@@ -1,30 +1,53 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import AddressSearchModal from '../components/AddressSearchModal';
 import GuideText from '../components/GuideText';
+import { getAddress } from '../redux/actions';
 
 const Address = () => {
+  const dispatch = useDispatch();
   const addressRef = useRef();
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [addressValue, setAddressValue] = useState(false);
+  const detailAddressRef = useRef();
 
-  setAddressValue;
+  const store = useSelector(state => state.address);
+  const [isShowModal, setIsShowModal] = useState(false);
+
+  useEffect(() => {
+    addressRef.current.value = store.roadAddress;
+  }, [store]);
 
   return (
     <Page>
       <GuideText />
       <Form>
         <div>
-          <input
-            ref={addressRef}
-            onClick={() => setIsShowModal(true)}
-            type="text"
-            placeholder="주소 또는 건물명으로 검색"
-          />
-          {addressValue ? <button>재검색</button> : null}
+          <div onClick={() => setIsShowModal(true)}>
+            <input
+              ref={addressRef}
+              type="text"
+              placeholder="주소 또는 건물명으로 검색"
+              disabled
+            />
+          </div>
+          {store.roadAddress ? (
+            <button onClick={() => setIsShowModal(true)} type="button">
+              재검색
+            </button>
+          ) : null}
         </div>
-        <input type="text" placeholder="상세주소를 입력해주세요" />
+        <input
+          ref={detailAddressRef}
+          type="text"
+          placeholder="상세주소를 입력해주세요"
+          onChange={() =>
+            dispatch(
+              getAddress('addressDetail', detailAddressRef.current.value),
+            )
+          }
+        />
       </Form>
       {isShowModal ? (
         <AddressSearchModal setIsShowModal={setIsShowModal} />
@@ -67,12 +90,18 @@ const Form = styled.form`
     color: #fff;
     font-weight: bold;
     font-size: 14px;
+    cursor: pointer;
   }
 
-  div {
+  > div {
     display: flex;
-    > input {
+    > div {
       flex-grow: 1;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      cursor: pointer;
     }
   }
 

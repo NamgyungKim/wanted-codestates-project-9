@@ -13,7 +13,7 @@ const addressApi = axios.create({
   },
 });
 
-export const getAddress = async searchWord => {
+export const getAddressAxios = async searchWord => {
   try {
     const response = await addressApi.get(
       `/addrlink/addrLinkApi.do?keyword=${searchWord}`,
