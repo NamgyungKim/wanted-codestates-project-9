@@ -56,7 +56,9 @@ const InputDateModal = ({ setIsShowCalender }) => {
         />
       </Calender>
       <div>
-        <button onClick={clickSelectBtn}>선택완료</button>
+        <div>
+          <button onClick={clickSelectBtn}>선택완료</button>
+        </div>
       </div>
     </Modal>
   );
@@ -70,17 +72,27 @@ const Modal = styled.div`
   height: 100%;
   background-color: #fff;
   z-index: 10;
-  > div > button {
-    position: absolute;
+  > div:last-child {
+    position: fixed;
+    left: 0;
     bottom: 0;
     width: 100%;
     height: 48px;
-    border: 0;
-    background-color: var(--main-color);
-    font-weight: bold;
-    font-size: 14px;
-    color: #fff;
-    cursor: pointer;
+    > div {
+      max-width: 768px;
+      min-width: 320px;
+      margin: auto;
+    }
+    div > button {
+      width: 100%;
+      height: 48px;
+      border: 0;
+      background-color: var(--main-color);
+      font-weight: bold;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -107,6 +119,7 @@ const Title = styled.div`
 `;
 
 const Calender = styled.div`
+  padding-bottom: 46px;
   .react-datepicker {
     width: 100%;
     border: none;

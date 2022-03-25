@@ -46,9 +46,9 @@ const Confirm = () => {
         <div>
           <h4>돌봄 유형</h4>
           <p>
-            {store.workType === 'Time'
+            {store.workType === 'TIME'
               ? '⏰ 시간제 돌봄'
-              : store.workType === 'Day'
+              : store.workType === 'DAY'
               ? '🌞 24시간 상주'
               : '유형이 없습니다.'}
           </p>

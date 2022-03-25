@@ -116,6 +116,7 @@ const Bar = styled.div`
   padding: 0 8px;
   margin: auto;
   box-sizing: border-box;
+  background-color: #fff;
   button {
     height: 48px;
     border: none;
