@@ -49,8 +49,6 @@ const GuideText = () => {
     }
   }, [url]);
 
-  console.log(currentData);
-
   return (
     <TextBox>
       <p>

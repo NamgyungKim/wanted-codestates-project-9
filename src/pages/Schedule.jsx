@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import GuideText from '../components/GuideText';
+import InputDateModal from '../components/InputDateModal';
 import SelectOption from '../components/SelectOption';
 import { staticData } from '../util/axios';
 
@@ -16,13 +18,18 @@ const startTime = [
   { value: '16:00:00', text: '오후4시' },
   { value: '17:00:00', text: '오후5시' },
   { value: '18:00:00', text: '오후6시' },
+  { value: '19:00:00', text: '오후7시' },
+  { value: '20:00:00', text: '오후8시' },
+  { value: '21:00:00', text: '오후9시' },
 ];
 
 const Schedule = () => {
-  const careHourRef = useRef();
-  const startCareRef = useRef();
   const [careHours, setCareHours] = useState();
-  const [showModal, setShowModal] = useState([]);
+  const [modalType, setModalType] = useState('');
+  const [modalData, setModalData] = useState([]);
+  const [isShowCalender, setIsShowCalender] = useState(false);
+
+  const store = useSelector(state => state.schedule);
 
   useEffect(() => {
     const getStaticData = async () => {
@@ -32,6 +39,14 @@ const Schedule = () => {
     getStaticData();
   }, []);
 
+  const careHoursText = () => {
+    for (const item of startTime) {
+      if (item.value === store.visitTime) {
+        return item.text;
+      }
+    }
+  };
+
   return (
     <Page>
       <GuideText />
@@ -40,43 +55,50 @@ const Schedule = () => {
           <FlexColumn>
             <label htmlFor="startDay">시작일</label>
             <input type="date" />
-            <InputDataBtn>날짜 선택</InputDataBtn>
+            <InputDataBtn onClick={() => setIsShowCalender(true)}>
+              {store.startDate ?? '날짜 선택'}
+            </InputDataBtn>
           </FlexColumn>
 
           <FlexColumn>
             <label htmlFor="endDay">종료일</label>
             <input type="date" />
-            <InputDataBtn>날짜 선택</InputDataBtn>
+            <InputDataBtn onClick={() => setIsShowCalender(true)}>
+              {store.endDate ?? '날짜 선택'}
+            </InputDataBtn>
           </FlexColumn>
         </InputDate>
         <FlexColumn>
           <label htmlFor="startCare">돌봄 시작 시간</label>
-          <select ref={startCareRef} name="startTime">
-            <option value="">선택</option>
-            {startTime.map(data => (
-              <option key={data.value} value={data.value}>
-                {data.text}
-              </option>
-            ))}
-          </select>
-          <SelectBox onClick={() => setShowModal(startTime)}>선택</SelectBox>
+          <SelectBox
+            onClick={() => {
+              setModalData(startTime), setModalType('visitTime');
+            }}
+          >
+            {store.visitTime ? careHoursText() : '선택'}
+          </SelectBox>
         </FlexColumn>
         <FlexColumn>
           <label htmlFor="careHours">하루 돌봄 시간</label>
-          <select ref={careHourRef} name="careHours">
-            <option value="">선택</option>
-            {careHours?.map(data => (
-              <option key={data.value} value={data.value}>
-                {data.text}
-              </option>
-            ))}
-          </select>
-          <SelectBox onClick={() => setShowModal(careHours)}>선택</SelectBox>
+          <SelectBox
+            onClick={() => {
+              setModalData(careHours), setModalType('hour');
+            }}
+          >
+            {store.hour ? `${store.hour} 시간` : '선택'}
+          </SelectBox>
         </FlexColumn>
       </Form>
-      {showModal.length == 0 ? null : (
-        <SelectOption showModal={showModal} setShowModal={setShowModal} />
+      {modalData.length == 0 ? null : (
+        <SelectOption
+          data={modalData}
+          setModalData={setModalData}
+          type={modalType}
+        />
       )}
+      {isShowCalender ? (
+        <InputDateModal setIsShowCalender={setIsShowCalender} />
+      ) : null}
     </Page>
   );
 };
@@ -87,7 +109,6 @@ const Page = styled.div`
 
 const Form = styled.div`
   margin-top: 32px;
-  select,
   input {
     width: 1px;
     height: 1px;
@@ -112,7 +133,7 @@ const InputDataBtn = styled.div`
   padding: 14px 16px;
   background-color: var(--light-gray);
   box-sizing: border-box;
-  color: var(--dark-gray);
+  color: var(--text);
   font-weight: bold;
   cursor: pointer;
   ::after {
