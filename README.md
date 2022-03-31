@@ -34,5 +34,5 @@ $ npm run start
 ![전화번호 입력](https://user-images.githubusercontent.com/87519250/161093448-77ab1811-3fae-43a9-b380-2dfaace13bf1.gif)
 
 
-### 전화 번호 입력 및 입력한 정보 확
+### 전화 번호 입력 및 입력한 정보 확인
 ![주소 입력](https://user-images.githubusercontent.com/87519250/161093455-f25f62dd-aa5a-45ec-b3aa-a3ac5c448ad7.gif)
